@@ -6,7 +6,7 @@ window.onload = function () {
 
     var player = x;
 
-    var board = [
+    window.board = [
         [empty, empty, empty],
         [empty, empty, empty],
         [empty, empty, empty]
@@ -17,9 +17,11 @@ window.onload = function () {
         for (var i = 0; i < tds.length; i++) {
             tds[i].onclick = function () {
 
-
                 var indexRowNum = Number(this.getAttribute('data-row'));
                 var indexColNum = Number(this.getAttribute('data-col'));
+
+                console.log(indexRowNum);
+                console.log(indexColNum);
 
                 if (board[indexRowNum][indexColNum] === empty) {
                     board[indexRowNum][indexColNum] = player;
@@ -35,6 +37,37 @@ window.onload = function () {
                     alert('This cell is occupied, please select a different')
                 }
             };
+        }
+        winner();
+    };
+
+    window.winner = function () {
+        /*строки*/
+        if (board[0][0] === player && board[0][1] === player && board[0][2] === player) {
+            alert(player + ' is winner');
+        }
+        if (board[1][0] === player && board[1][1] === player && board[1][2] === player) {
+            alert(player + ' is winner');
+        }
+        if (board[2][0] === player && board[2][1] === player && board[2][2] === player) {
+            alert(player + ' is winner');
+        }
+        /*диагонали*/
+        if (board[0][0] === player && board[1][1] === player && board[2][2] === player) {
+            alert(player + ' is winner');
+        }
+        if (board[0][2] === player && board[1][1] === player && board[2][0] === player) {
+            alert(player + ' is winner');
+        }
+        /*столбцы*/
+        if (board[0][0] === player && board[1][0] === player && board[2][0] === player) {
+            alert(player + ' is winner');
+        }
+        if (board[0][1] === player && board[1][1] === player && board[2][1] === player) {
+            alert(player + ' is winner');
+        }
+        if (board[0][2] === player && board[1][2] === player && board[2][2] === player) {
+            alert(player + ' is winner');
         }
     };
 
@@ -79,6 +112,7 @@ window.onload = function () {
     };
     render();
     addListeners();
+    winner();
 };
 
 //при нажатии на клетку td ставим класс occupied
