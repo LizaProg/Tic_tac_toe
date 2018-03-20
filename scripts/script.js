@@ -6,11 +6,16 @@ window.onload = function () {
 
     var player = x;
 
-    window.board = [
+    var board = [
         [empty, empty, empty],
         [empty, empty, empty],
         [empty, empty, empty]
     ];
+
+    window.info = function () {
+        console.log(player);
+        console.log(board);
+    };
 
     var addListeners = function () {
         var tds = document.getElementsByTagName('td');
@@ -20,17 +25,20 @@ window.onload = function () {
                 var indexRowNum = Number(this.getAttribute('data-row'));
                 var indexColNum = Number(this.getAttribute('data-col'));
 
-                console.log(indexRowNum);
-                console.log(indexColNum);
-
                 if (board[indexRowNum][indexColNum] === empty) {
                     board[indexRowNum][indexColNum] = player;
+                    if (isCurrentPlayerWinner() === true) {
+                        render();
+                        alert(player + ' is winner');
+                        return;
+                    }
 
                     if (player === x) {
                         player = o;
                     } else {
                         player = x;
                     }
+
                     render();
                     addListeners();
                 } else {
@@ -38,48 +46,48 @@ window.onload = function () {
                 }
             };
         }
-        winner();
     };
 
-    window.winner = function () {
-        /*строки*/
+    var isCurrentPl
+    ayerWinner = function () {
+        var result = false;
         if (board[0][0] === player && board[0][1] === player && board[0][2] === player) {
-            alert(player + ' is winner');
+            result = true;
         }
         if (board[1][0] === player && board[1][1] === player && board[1][2] === player) {
-            alert(player + ' is winner');
+            result = true;
         }
         if (board[2][0] === player && board[2][1] === player && board[2][2] === player) {
-            alert(player + ' is winner');
+            result = true;
         }
         /*диагонали*/
         if (board[0][0] === player && board[1][1] === player && board[2][2] === player) {
-            alert(player + ' is winner');
+            result = true;
         }
         if (board[0][2] === player && board[1][1] === player && board[2][0] === player) {
-            alert(player + ' is winner');
+            result = true;
         }
         /*столбцы*/
         if (board[0][0] === player && board[1][0] === player && board[2][0] === player) {
-            alert(player + ' is winner');
+            result = true;
         }
         if (board[0][1] === player && board[1][1] === player && board[2][1] === player) {
-            alert(player + ' is winner');
+            result = true;
         }
         if (board[0][2] === player && board[1][2] === player && board[2][2] === player) {
-            alert(player + ' is winner');
+            result = true;
         }
+        return result;
     };
 
 
-    window.render = function () {
+    var render = function () {
         var status;
         if (player === x) {
             status = "Ходит: X"
         } else {
             status = "Ходит: O"
         }
-
 
         var htmlBoard = '';
         for (var j = 0; j < board.length; j++) {
@@ -102,31 +110,29 @@ window.onload = function () {
             }
             htmlRow += '</tr>';
             htmlBoard += htmlRow;
-            console.log(htmlRow);
         }
         document.getElementById('status').innerHTML = status;
-
 
         var root = document.getElementById('game');
         root.innerHTML = htmlBoard;
     };
+
+    var restart = function () {
+        for (var i = 0; i < board.length; i++) {
+            for (var j = 0; j < board[i].length; j++) {
+                board[i][j] = empty;
+            }
+        }
+        player = x;
+        render();
+        addListeners();
+    };
+
+    var btn = document.getElementById('btnRestart');
+    btn.onclick = restart;
+
     render();
     addListeners();
-    winner();
 };
 
-//при нажатии на клетку td ставим класс occupied
-// проверяем нет ли у td такого класса
-// если есть то выводим "this cell is occupied, please select a different"
-//если нет то ставим значок игрока
 
-
-//после каждого нажатия на клетку нужно проверять не выпала ли выигрышная комбинация
-// проверяем board
-//(board[0][2]) === "x" && (board[1][1]) === "x" && (board[2][0]) === "x" или все тоже только равно о
-//выводить победа по диагонали
-
-//если больше некуда ходить?
-
-//кнопка сброса
-//при нажатии на кнопку все элементы массива board становятся empty
